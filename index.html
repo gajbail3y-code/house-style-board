@@ -126,8 +126,8 @@ button:focus-visible,textarea:focus-visible,a:focus-visible,input:focus-visible{
 .pref .none{color:var(--muted);margin:0}
 .bars{display:flex;flex-direction:column;gap:6px}
 .barrow{display:grid;grid-template-columns:minmax(0,1fr) 90px 26px;gap:8px;align-items:center;font-size:14px}
-.barrow .track{height:8px;background:var(--line);border-radius:4px;overflow:hidden}
-.barrow .fill{height:100%;background:var(--person)}
+.barrow .track{display:block;height:8px;background:var(--line);border-radius:4px;overflow:hidden}
+.barrow .fill{display:block;height:100%;background:var(--person);min-width:6px}
 .barrow.neg .fill{background:var(--no)}
 .barrow b{font:500 12px var(--mono);text-align:right;font-variant-numeric:tabular-nums}
 .share{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:18px}
