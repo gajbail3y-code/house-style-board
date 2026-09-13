@@ -416,12 +416,13 @@ document.getElementById("send").addEventListener("click", async () => {
   msg.textContent = "Opening WhatsApp";
 });
 function takeRatingsFromLink(){
-  const m = location.hash.match(/r=([A-Za-z0-9_-]+)/); if (!m) return;
-  try{
-    const {p, res} = unpackRatings(m[1]);
-    ratings[p] = res; persistLocal();
-    document.getElementById("send-msg").textContent = `${PEOPLE[p]}'s ratings added`;
-  }catch(e){ document.getElementById("send-msg").textContent = "That link didn't open the ratings. Ask for it to be sent again."; }
+  // A link can carry one person's ratings or both: #r=<code>&r=<code>
+  const codes = [...location.hash.matchAll(/r=([A-Za-z0-9_-]+)/g)].map(m => m[1]); if (!codes.length) return;
+  const added = [];
+  codes.forEach(c => { try{ const {p, res} = unpackRatings(c); ratings[p] = res; added.push(PEOPLE[p]); }catch(e){} });
+  persistLocal();
+  document.getElementById("send-msg").textContent = added.length
+    ? `${added.join(" and ")}'s ratings added` : "That link didn't open the ratings. Ask for it to be sent again.";
   history.replaceState(null, "", location.pathname + location.search);
 }
 
@@ -466,7 +467,10 @@ takeRatingsFromLink();
 document.getElementById("mode-note").textContent = MODE==="db"
   ? "Answers save to this page for both of you."
   : "When you're done, tap Send my ratings and message the link to the other person. Opening it puts both sets of thumbs side by side.";
-if (MODE !== "db"){ const k = new URLSearchParams(location.search).get("who"); if (k && PEOPLE[k]) person = k; }
+if (MODE !== "db"){ const q = new URLSearchParams(location.search); const k = q.get("who"); if (k && PEOPLE[k]) person = k;
+  const v = q.get("view"); if (["homes","together","prefs"].includes(v)){ tab = v;
+    document.querySelectorAll("[data-tab]").forEach(b=>b.setAttribute("aria-selected", b.dataset.tab===v));
+    ["homes","together","prefs"].forEach(x => document.getElementById("view-"+x).hidden = x!==v); } }
 document.querySelectorAll("[data-person]").forEach(b=>b.setAttribute("aria-pressed", b.dataset.person===person));
 render();
 setSync(MODE==="db" ? "Connecting…" : "Saved on this device");
