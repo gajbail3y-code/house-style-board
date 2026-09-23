@@ -33,7 +33,7 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--grant);outline-offs
 .empty{grid-column:1/-1;padding:30px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:6px}
 </style></head><body><div class="w">
 <h1>New on the market</h1>
-<p class="lede">0 homes found in the last three days, to 2026-09-22. Newest first. Nothing here has been shown to you before. Yes puts it on the viewing list, No drops it.</p>
+<p class="lede">0 homes found in the last three days, to 2026-09-23. Newest first. Nothing here has been shown to you before. Yes puts it on the viewing list, No drops it.</p>
 <div class="bar"><div class="tabs" role="group" aria-label="Show">
 <button id="f-all" data-f="all" aria-pressed="true">All</button>
 <button id="f-yes" data-f="yes" aria-pressed="false">Yes</button>
@@ -43,7 +43,7 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--grant);outline-offs
 <script>
 const HOMES=[];
 const CARDS={};
-const KEY="new-today-2026-09-22"; let state={}, filter="all";
+const KEY="new-today-2026-09-23"; let state={}, filter="all";
 try{state=JSON.parse(localStorage.getItem(KEY)||"{}")}catch(e){}
 const sync=t=>document.getElementById("sync").textContent=t;
 function render(){
@@ -64,7 +64,7 @@ document.addEventListener("click",e=>{
 document.getElementById("send").addEventListener("click",async()=>{
   const yes=HOMES.filter(h=>state[h.id]==="yes"), no=HOMES.filter(h=>state[h.id]==="no");
   if(!yes.length&&!no.length){sync("Answer at least one first");return;}
-  const text=["New homes, 2026-09-22","","YES: "+(yes.map(h=>h.town+" £"+h.price).join(", ")||"none"),"NO: "+(no.map(h=>h.town).join(", ")||"none")].join("\n");
+  const text=["New homes, 2026-09-23","","YES: "+(yes.map(h=>h.town+" £"+h.price).join(", ")||"none"),"NO: "+(no.map(h=>h.town).join(", ")||"none")].join("\n");
   const code=btoa(unescape(encodeURIComponent(JSON.stringify(state)))).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");
   const url=location.origin+location.pathname+"#s="+code;
   if(navigator.share){try{await navigator.share({title:"New homes",text,url});sync("Sent");return;}catch(e){if(e.name==="AbortError")return;}}
